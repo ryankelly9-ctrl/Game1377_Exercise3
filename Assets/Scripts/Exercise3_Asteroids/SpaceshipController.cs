@@ -23,6 +23,7 @@
  */
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class AsteroidsPlayerController : MonoBehaviour
 {
@@ -56,12 +57,26 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private void HandleRotation()
     {
-
+        if (Input.GetButton("Horizontal"))
+        {
+            transform.Rotate(Vector3.forward * rotationSpeed * rotationInput * Time.deltaTime);
+        }
+//        if (Input.GetKey(KeyCode.A))
+//        {
+//            transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
+//        }
+//        if (Input.GetKey(KeyCode.D))
+//        {
+//            transform.Rotate(Vector3.back * rotationSpeed * Time.deltaTime);
+//        }
     }
 
     private void HandleThrust()
     {
-        
+        if (Input.GetButton("Vertical"))
+        {
+            
+        }
     }
 
     private void HandleFire()
