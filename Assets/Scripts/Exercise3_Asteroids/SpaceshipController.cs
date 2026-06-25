@@ -59,7 +59,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     {
         if (Input.GetButton("Horizontal"))
         {
-            transform.Rotate(Vector3.forward * rotationSpeed * rotationInput * Time.deltaTime);
+            transform.Rotate(Vector3.back * rotationSpeed * rotationInput * Time.deltaTime);
         }
 //        if (Input.GetKey(KeyCode.A))
 //        {
@@ -75,7 +75,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     {
         if (Input.GetButton("Vertical"))
         {
-            
+            rb.AddForce(transform.up * thrustForce * thrustInput, ForceMode2D.Force);
         }
     }
 
