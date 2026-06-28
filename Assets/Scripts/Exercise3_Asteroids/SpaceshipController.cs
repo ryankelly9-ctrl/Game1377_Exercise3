@@ -24,6 +24,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class AsteroidsPlayerController : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private float rotationInput;
     private float thrustInput;
+
+    private float RandomY;
+    private float RandomX;
 
     void Start()
     {
@@ -61,14 +65,6 @@ public class AsteroidsPlayerController : MonoBehaviour
         {
             transform.Rotate(Vector3.back * rotationSpeed * rotationInput * Time.deltaTime);
         }
-//        if (Input.GetKey(KeyCode.A))
-//        {
-//            transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
-//        }
-//        if (Input.GetKey(KeyCode.D))
-//        {
-//            transform.Rotate(Vector3.back * rotationSpeed * Time.deltaTime);
-//        }
     }
 
     private void HandleThrust()
@@ -104,6 +100,8 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private void TeleportToRandomLocation()
     {
-
+        RandomY = Random.Range(ScreenBounds.ScreenTop, ScreenBounds.ScreenBottom);
+        RandomX = Random.Range(ScreenBounds.ScreenLeft, ScreenBounds.ScreenRight);
+        transform.position = new Vector3(RandomX, RandomY);
     }
 }
