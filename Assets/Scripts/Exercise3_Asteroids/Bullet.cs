@@ -20,14 +20,20 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float bulletSpeed = 20f;
     [SerializeField] private float bulletLifetime = 5f;
+    private Rigidbody rb;
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+    }
 
+    void Update()
+    {
+        transform.Translate(Vector3.up * bulletSpeed * bulletLifetime * Time.deltaTime);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-
+        Destroy(this);
     }
 }
