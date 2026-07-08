@@ -32,8 +32,13 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector3.up * bulletSpeed * bulletLifetime * Time.deltaTime);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter(Collision collision)
     {
-        Destroy(this);
+        if (collision.gameObject.CompareTag("Asteroid"))
+        {
+            Debug.Log("Asteroid hit!");
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

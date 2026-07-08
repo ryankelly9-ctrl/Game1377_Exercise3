@@ -19,7 +19,11 @@ using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
 {
-    public GameObject[] asteroidPrefabs;
+    [SerializeField] private GameObject largeAsteroidPrefab;
+    [SerializeField] private GameObject mediumAsteroidPrefab;
+    [SerializeField] private GameObject smallAsteroidPrefab;
+
+    [SerializeField] private int initialAsteroidCount = 5;
 
     // These variables determine the spawn area for the asteroids.
     // They are calculated at Start based off of the camera size. 
@@ -42,10 +46,6 @@ public class AsteroidSpawner : MonoBehaviour
         spawnYMax = screenHalfHeight + playerSafeDistance;
         spawnYMin = -screenHalfHeight - playerSafeDistance;
 
-        asteroidInterval = Random.Range(asteroidIntervalmin, asteroidIntervalMax);
-
-        InvokeRepeating("SpawnAsteroid", asteroidInterval, asteroidInterval);
-
         SpawnInitialAsteroids();
     }
 
@@ -56,18 +56,37 @@ public class AsteroidSpawner : MonoBehaviour
 
     private void SpawnInitialAsteroids()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < initialAsteroidCount; i++)
         {
-            SpawnAsteroid();
+            Vector3 spawnPosition;
+            do
+            {
+                float randomX = Random.Range(spawnXMin, spawnXMax);
+                float randomY = Random.Range(spawnYMin, spawnYMax);
+
+                spawnPosition = new Vector3(randomX, randomY, 0f);
+            } while (Vector3.Distance(spawnPosition, Vector3.zero) < playerSafeDistance);
+
+            SpawnAsteroid(spawnPosition, Asteroid.AsteroidSize.Large);
         }
     }
 
-    public void SpawnAsteroid()
+    public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
-        // Spawn an asteroid at the location specified by position parameter with the size specified by the size parameter.
-        Vector3 asteroidSpawnInitialPos = new Vector3(Random.Range(spawnXMin, spawnXMax), Random.Range(spawnYMin, spawnYMax) * playerSafeDistance);
-        int asteroidIndex = Random.Range(0, asteroidPrefabs.Length);
+        GameObject asteroidPrefab = null;
+        switch (size)
+        {
+            case Asteroid.AsteroidSize.Large:
+                asteroidPrefab = largeAsteroidPrefab;
+                break;
 
-        Instantiate(asteroidPrefabs[asteroidIndex], asteroidSpawnInitialPos, asteroidPrefabs[asteroidIndex].transform.rotation);
+            case Asteroid.AsteroidSize.Medium:
+                asteroidPrefab = mediumAsteroidPrefab;
+                break;
+        }
+        if (asteroidPrefab != null)
+        {
+            Instantiate(asteroidPrefab, position, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
+        }
     }
 }

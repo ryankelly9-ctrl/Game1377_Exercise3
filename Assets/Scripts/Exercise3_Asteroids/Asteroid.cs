@@ -14,6 +14,7 @@
 * 3. When the astroid hits the player, it should destroy the player. 
 */
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Asteroid : MonoBehaviour
@@ -31,20 +32,49 @@ public class Asteroid : MonoBehaviour
 
     void Start()
     {
-    
+        rb = GetComponent<Rigidbody2D>();
+        spawner = FindAnyObjectByType <AsteroidSpawner>();
+        rb.linearVelocity = transform.up * speed;
+        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed);
     }
 
     void Update()
     {
+        
     }
 
     private void BreakAsteroid()
     {
-
+        if (size == AsteroidSize.Large)
+        {
+            SpawnChildren(AsteroidSize.Medium);
+        }
+        else if (size == AsteroidSize.Medium)
+        {
+            SpawnChildren(AsteroidSize.Small);
+        }
+        Destroy(gameObject);
     }
 
     private void SpawnChildren(AsteroidSize childSize)
     {
-        
+        if (spawner == null)
+            return;
+        spawner.SpawnAsteroid(transform.position, childSize);
+        spawner.SpawnAsteroid(transform.position, childSize);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag ("Player"))
+        {
+            Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(collision.gameObject);
+            BreakAsteroid();
+        }
     }
 }
