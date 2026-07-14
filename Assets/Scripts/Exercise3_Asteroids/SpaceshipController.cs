@@ -34,24 +34,44 @@ public class AsteroidsPlayerController : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
 
+    [SerializeField] private AsteroidSpawner asteroidSpawnerScript;
+    [SerializeField] private GameObject PlayerSpaceship;
+
     private float rotationInput;
     private float thrustInput;
 
     private float RandomY;
     private float RandomX;
 
+    [SerializeField] private Vector2 spawnPosition;
+
+    private int startingLives;
+    [SerializeField] public int currentLives;
+
+    public bool isDead;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spawnPosition = new Vector2(0,0);
+        startingLives = 3;
+        currentLives = startingLives;
+        isDead = false;
     }
 
     void Update()
     {
         rotationInput = Input.GetAxis("Horizontal");
         thrustInput = Input.GetAxis("Vertical");
-        HandleRotation();
-        HandleFire();
-        HandleHyperspace();
+
+        HandleLives();
+
+        if (!isDead)
+        {
+            HandleRotation();
+            HandleFire();
+            HandleHyperspace();
+        }
     }
 
     void FixedUpdate()
@@ -69,7 +89,7 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private void HandleThrust()
     {
-        if (Input.GetButton("Vertical"))
+        if (Input.GetButton("Vertical") && !isDead)
         {
             rb.AddForce(transform.up * thrustForce * thrustInput, ForceMode2D.Force);
         }
@@ -101,10 +121,32 @@ public class AsteroidsPlayerController : MonoBehaviour
         }
     }
 
+    private void HandleLives()
+    {
+        if (currentLives <= 0)
+        {
+            isDead = true;
+            Debug.Log("Out of Lives! Game Over!");
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag ("Asteroid"))
+        {
+            currentLives -= 1;
+
+            if(!isDead)
+            {
+                Instantiate(PlayerSpaceship, spawnPosition, Quaternion.identity);
+            }
+        }    
+    }
+
     private void TeleportToRandomLocation()
     {
         RandomY = Random.Range(ScreenBounds.ScreenTop, ScreenBounds.ScreenBottom);
         RandomX = Random.Range(ScreenBounds.ScreenLeft, ScreenBounds.ScreenRight);
-        transform.position = new Vector3(RandomX, RandomY);
+        transform.position = new Vector3(RandomX, RandomY) * asteroidSpawnerScript.playerSafeDistance;
     }
 }

@@ -30,7 +30,7 @@ public class Asteroid : MonoBehaviour
     private AsteroidSpawner spawner;
     private Vector2 velocity;
 
-    void Start()
+   void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spawner = FindAnyObjectByType <AsteroidSpawner>();

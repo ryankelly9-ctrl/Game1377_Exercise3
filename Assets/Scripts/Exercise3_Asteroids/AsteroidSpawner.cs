@@ -31,11 +31,7 @@ public class AsteroidSpawner : MonoBehaviour
     private float spawnXMin = 0f;
     private float spawnYMax = 0f;
     private float spawnYMin = 0f;
-    private float playerSafeDistance = 3;
-
-    float asteroidInterval;
-    float asteroidIntervalmin = 1;
-    float asteroidIntervalMax = 4;
+    [SerializeField] public float playerSafeDistance = 3;
 
     void Start()
     {
