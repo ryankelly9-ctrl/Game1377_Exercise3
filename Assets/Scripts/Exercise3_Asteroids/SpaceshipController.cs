@@ -22,6 +22,8 @@
  
  */
 
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
@@ -33,9 +35,14 @@ public class AsteroidsPlayerController : MonoBehaviour
     [SerializeField] private float thrustForce = 500f;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private float bulletDelay = 5.0f;
+    [SerializeField] private float immuneDuration = 3.0f;
 
     [SerializeField] private AsteroidSpawner asteroidSpawnerScript;
+    [SerializeField] private Asteroid asteroidScript;
     [SerializeField] private GameObject PlayerSpaceship;
+    [SerializeField] private Collider2D spaceshipCollider;
+    
 
     private float rotationInput;
     private float thrustInput;
@@ -53,6 +60,9 @@ public class AsteroidsPlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spaceshipCollider = GetComponent<Collider2D>();
+        spaceshipCollider.enabled = true;
+
         spawnPosition = new Vector2(0,0);
         startingLives = 3;
         currentLives = startingLives;
@@ -69,6 +79,7 @@ public class AsteroidsPlayerController : MonoBehaviour
         if (!isDead)
         {
             HandleRotation();
+            bulletDelay -= 0.1f;
             HandleFire();
             HandleHyperspace();
         }
@@ -97,9 +108,10 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private void HandleFire()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && bulletDelay <= 0.0f)
         {
             FireBullet();
+            bulletDelay = 5.0f;
         }
     }
 
@@ -127,26 +139,87 @@ public class AsteroidsPlayerController : MonoBehaviour
         {
             isDead = true;
             Debug.Log("Out of Lives! Game Over!");
+            Destroy(gameObject);
         }
     }
 
+    // If player touches an asteroid, lose a life and destroy asteroid.
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag ("Asteroid"))
         {
             currentLives -= 1;
+            transform.position = new Vector2(0,0);
+            Destroy(collision.gameObject);
+            spaceshipCollider.enabled = false;
 
-            if(!isDead)
-            {
-                Instantiate(PlayerSpaceship, spawnPosition, Quaternion.identity);
-            }
+            Invoke("ToggleColliderOn", immuneDuration);         
         }    
+    }
+
+    void ToggleColliderOn()
+    {
+        spaceshipCollider.enabled = true;
+    }
+
+    // Fetches a random point on the screen and returns it
+    private Vector2 GetRandomPositionOnScreen()
+    {
+        RandomY = Random.Range(ScreenBounds.ScreenTop, ScreenBounds.ScreenBottom);
+        RandomX = Random.Range(ScreenBounds.ScreenLeft, ScreenBounds.ScreenRight);
+        return new Vector2(RandomX, RandomY);
     }
 
     private void TeleportToRandomLocation()
     {
-        RandomY = Random.Range(ScreenBounds.ScreenTop, ScreenBounds.ScreenBottom);
-        RandomX = Random.Range(ScreenBounds.ScreenLeft, ScreenBounds.ScreenRight);
-        transform.position = new Vector3(RandomX, RandomY) * asteroidSpawnerScript.playerSafeDistance;
+        Vector2 randomPoint = GetRandomPositionOnScreen();
+        // raycast here??
+        if (isTeleportSafe(randomPoint))
+        {
+            transform.position = randomPoint;
+        }
+        else
+        {
+            Debug.Log("Something blocks hyperspace, best try again.");
+        }
+    }
+
+    // Checks if position on screen is safe using OverlapCircleAll to check asteroid prescence
+    public bool isTeleportSafe(Vector2 destination)
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(destination, asteroidSpawnerScript.playerSafeDistance);
+
+        // If there are no colliders, return isTeleportSafe as true
+
+        if (hitColliders == null)
+        {
+            return true;
+        }
+
+        // If there ARE colliders, count the amount and return isTeleportSafe as false
+
+        foreach (Collider2D hit in hitColliders)
+        {
+            if (hit == null || hit.gameObject == null)
+            {
+                continue;
+            }
+
+            if (hit.gameObject == this.gameObject)
+            {
+                continue;
+            }
+
+            Asteroid asteroidComponent = hit.GetComponent<Asteroid>();
+
+            if (asteroidComponent != null)
+            {
+                return false;
+            }
+        }
+
+        // All other cases return true
+
+        return true;
     }
 }

@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Asteroid
   - Bullet
+  - Power Up
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Power Ups
   - Water
   - UI
   - 
