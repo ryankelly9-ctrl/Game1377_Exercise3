@@ -7,6 +7,9 @@ TagManager:
   - Asteroid
   - Bullet
   - Power Up
+  - 1Up
+  - SpeedUp
+  - SizeUp
   layers:
   - Default
   - TransparentFX

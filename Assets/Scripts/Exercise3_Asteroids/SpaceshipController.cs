@@ -31,8 +31,8 @@ using UnityEngine.UIElements;
 public class AsteroidsPlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float rotationSpeed = 360f;
-    [SerializeField] private float thrustForce = 500f;
+    [SerializeField] public float rotationSpeed = 360f;
+    [SerializeField] public float thrustForce = 500f;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletDelay = 5.0f;
@@ -173,14 +173,15 @@ public class AsteroidsPlayerController : MonoBehaviour
     private void TeleportToRandomLocation()
     {
         Vector2 randomPoint = GetRandomPositionOnScreen();
-        // raycast here??
+
+        do
+        {
+            randomPoint = GetRandomPositionOnScreen();
+        } while (!isTeleportSafe(randomPoint));
+
         if (isTeleportSafe(randomPoint))
         {
             transform.position = randomPoint;
-        }
-        else
-        {
-            Debug.Log("Something blocks hyperspace, best try again.");
         }
     }
 
