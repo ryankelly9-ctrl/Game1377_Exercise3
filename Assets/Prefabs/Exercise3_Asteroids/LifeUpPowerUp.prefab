@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8057485027676383693}
   - component: {fileID: 3770097903343726830}
   - component: {fileID: 1869475840803526445}
-  - component: {fileID: -2946301048248766376}
-  m_Layer: 3
-  m_Name: 1UpPowerUp
+  - component: {fileID: 2977617208885060437}
+  m_Layer: 0
+  m_Name: LifeUpPowerUp
   m_TagString: 1Up
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,21 +143,30 @@ PolygonCollider2D:
       - {x: -0.5, y: -0.28866667}
       - {x: 0.5, y: -0.28866667}
   m_UseDelaunayMesh: 1
---- !u!114 &-2946301048248766376
-MonoBehaviour:
+--- !u!50 &2977617208885060437
+Rigidbody2D:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2735093318335724087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf133c7435aad364c92eb14df973dd4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PowerUpManager
-  spaceshipControllerScript: {fileID: 0}
-  powerUpSpawnerScript: {fileID: 0}
-  type: 0
-  rotationSpeedUp: 400
-  thrustForceUp: 600
-  powerUpDuration: 8
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

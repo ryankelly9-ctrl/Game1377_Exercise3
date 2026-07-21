@@ -38,8 +38,13 @@ public class AsteroidsPlayerController : MonoBehaviour
     [SerializeField] private float bulletDelay = 5.0f;
     [SerializeField] private float immuneDuration = 3.0f;
 
+    [SerializeField] public float rotationSpeedUp = 380f;
+    [SerializeField] public float thrustForceUp = 525f;
+    [SerializeField] public float powerUpDuration = 8.0f;
+
     [SerializeField] private AsteroidSpawner asteroidSpawnerScript;
     [SerializeField] private Asteroid asteroidScript;
+    [SerializeField] private PowerUpManager powerUpManagerScript;
     [SerializeField] private GameObject PlayerSpaceship;
     [SerializeField] private Collider2D spaceshipCollider;
     
@@ -146,6 +151,9 @@ public class AsteroidsPlayerController : MonoBehaviour
     // If player touches an asteroid, lose a life and destroy asteroid.
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+        // Asteroid Collision
+
         if (collision.gameObject.CompareTag ("Asteroid"))
         {
             currentLives -= 1;
@@ -155,6 +163,42 @@ public class AsteroidsPlayerController : MonoBehaviour
 
             Invoke("ToggleColliderOn", immuneDuration);         
         }    
+
+        // Power Ups Collision and Effect
+
+        // NEEDS METHODS FOR EACH COROUTINE ATTACHED TO EACH POWER UP - SIMPLY RUN A METHOD CONTAINING THE POWER UP INTERACTIONS THEN DESTROY THE POWER UP OBJECT.
+
+        if (collision.gameObject.CompareTag ("1Up"))
+        {
+            currentLives += 1;
+            Debug.Log(currentLives);
+            Destroy(collision.gameObject);
+        }
+        if (collision.gameObject.CompareTag ("SpeedUp"))
+        {
+            Invoke("SpeedUpPowerUp",powerUpDuration);
+            Debug.Log("Speed Up!");
+            Destroy(collision.gameObject);
+            thrustForce = 500f;
+            rotationSpeed = 360f;
+        }
+        if (collision.gameObject.CompareTag ("SizeUp"))
+        {
+            Invoke("BulletSizeUpPowerUp", powerUpDuration);
+            Debug.Log("Bullet Size Up!");
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void SpeedUpPowerUp()
+    {
+        thrustForce = thrustForceUp;
+        rotationSpeed = rotationSpeedUp;
+    }
+
+    private void BulletSizeUpPowerUp()
+    {
+
     }
 
     void ToggleColliderOn()

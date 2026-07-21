@@ -1,4 +1,6 @@
 using System;
+using UnityEngine.UI;
+using TMPro;
 using UnityEngine;
 
 public class PowerUpManager : MonoBehaviour
@@ -8,54 +10,25 @@ public class PowerUpManager : MonoBehaviour
     public enum PowerUpType { LifeUp, BulletSizeUp, MovementSpeedUp }
 
     [SerializeField] private PowerUpType type;
-    [SerializeField] private float rotationSpeedUp = 400f;
-    [SerializeField] private float thrustForceUp = 600f;
-    [SerializeField] private float powerUpDuration = 8.0f;
+    [SerializeField] private float speed;
 
-    private PowerUpManager spawner;
+    private Rigidbody2D rb;
+    private PowerUpSpawner spawner;
+    private Vector2 velocity;
+
+    [SerializeField] private TextMeshProUGUI livesText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        spawner = FindAnyObjectByType<PowerUpSpawner>();
+    //    rb.linearVelocity = transform.up * speed;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-    }
-
-    // 1Up, SizeUp, SpeedUp player interaction
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("1Up"))
-        {
-            spaceshipControllerScript.currentLives += 1;
-            Destroy(collision.gameObject);
-        }
-        if (collision.gameObject.CompareTag("SizeUp"))
-        {
-            Invoke("BulletSizeUpPowerUp", powerUpDuration);
-            Destroy(collision.gameObject);
-        }
-        if (collision.gameObject.CompareTag("SpeedUp"))
-        {
-            Invoke("SpeedUpPowerUp", powerUpDuration);
-            Destroy(collision.gameObject);
-            spaceshipControllerScript.thrustForce = 500f;
-            spaceshipControllerScript.rotationSpeed = 360f;
-        }
-    }
-
-    private void BulletSizeUpPowerUp()
-    {
-        
-    }
-
-    private void SpeedUpPowerUp()
-    {
-        spaceshipControllerScript.thrustForce = thrustForceUp;
-        spaceshipControllerScript.rotationSpeed = rotationSpeedUp;
     }
 }
