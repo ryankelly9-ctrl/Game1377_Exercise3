@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
@@ -40,6 +41,7 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     [SerializeField] public float rotationSpeedUp = 400f;
     [SerializeField] public float thrustForceUp = 20f;
+    [SerializeField] public float bulletScaleMultiplier = 2f;
     [SerializeField] public float powerUpDuration = 8.0f;
 
     [SerializeField] private AsteroidSpawner asteroidSpawnerScript;
@@ -49,6 +51,8 @@ public class AsteroidsPlayerController : MonoBehaviour
     [SerializeField] private Collider2D spaceshipCollider;
 
     private Coroutine speedUpDuration;
+    private Coroutine bulletSizeUpDuration;
+    private bool bulletSizeUpActive = false;
 
     private float rotationInput;
     private float thrustInput;
@@ -128,7 +132,15 @@ public class AsteroidsPlayerController : MonoBehaviour
             Debug.LogWarning("Bullet prefab not assigned!");
             return;
         }
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        if (bulletSizeUpActive == false)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        }
+        if (bulletSizeUpActive == true)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            bullet.transform.localScale *= bulletScaleMultiplier;
+        }
     }
 
     private void HandleHyperspace()
@@ -189,9 +201,14 @@ public class AsteroidsPlayerController : MonoBehaviour
         }
         if (collision.gameObject.CompareTag ("SizeUp"))
         {
-            Invoke("BulletSizeUpPowerUp", powerUpDuration);
-            Debug.Log("Bullet Size Up!");
             Destroy(collision.gameObject);
+
+            if (bulletSizeUpDuration != null)
+            {
+                StopCoroutine(bulletSizeUpDuration);
+            }
+
+            bulletSizeUpDuration = StartCoroutine(BulletSizeCoroutine());
         }
     }
 
@@ -212,9 +229,18 @@ public class AsteroidsPlayerController : MonoBehaviour
         rotationSpeed = rotationSpeedUp;
     }
 
+    IEnumerator BulletSizeCoroutine()
+    {
+        BulletSizeUpPowerUp();
+
+        yield return new WaitForSeconds(powerUpDuration);
+
+        bulletSizeUpActive = false;
+    }
+
     private void BulletSizeUpPowerUp()
     {
-
+        bulletSizeUpActive = true;
     }
 
     void ToggleColliderOn()
