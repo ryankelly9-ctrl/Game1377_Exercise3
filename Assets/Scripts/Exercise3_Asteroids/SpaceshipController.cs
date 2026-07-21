@@ -32,14 +32,14 @@ public class AsteroidsPlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] public float rotationSpeed = 360f;
-    [SerializeField] public float thrustForce = 500f;
+    [SerializeField] public float thrustForce = 10f;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletDelay = 5.0f;
     [SerializeField] private float immuneDuration = 3.0f;
 
-    [SerializeField] public float rotationSpeedUp = 380f;
-    [SerializeField] public float thrustForceUp = 525f;
+    [SerializeField] public float rotationSpeedUp = 400f;
+    [SerializeField] public float thrustForceUp = 20f;
     [SerializeField] public float powerUpDuration = 8.0f;
 
     [SerializeField] private AsteroidSpawner asteroidSpawnerScript;
@@ -47,7 +47,8 @@ public class AsteroidsPlayerController : MonoBehaviour
     [SerializeField] private PowerUpManager powerUpManagerScript;
     [SerializeField] private GameObject PlayerSpaceship;
     [SerializeField] private Collider2D spaceshipCollider;
-    
+
+    private Coroutine speedUpDuration;
 
     private float rotationInput;
     private float thrustInput;
@@ -176,11 +177,15 @@ public class AsteroidsPlayerController : MonoBehaviour
         }
         if (collision.gameObject.CompareTag ("SpeedUp"))
         {
-            Invoke("SpeedUpPowerUp",powerUpDuration);
-            Debug.Log("Speed Up!");
             Destroy(collision.gameObject);
-            thrustForce = 500f;
-            rotationSpeed = 360f;
+
+            if (speedUpDuration != null)
+            {
+                StopCoroutine(speedUpDuration);
+            }
+
+            speedUpDuration = StartCoroutine(SpeedCoroutine());
+
         }
         if (collision.gameObject.CompareTag ("SizeUp"))
         {
@@ -188,6 +193,17 @@ public class AsteroidsPlayerController : MonoBehaviour
             Debug.Log("Bullet Size Up!");
             Destroy(collision.gameObject);
         }
+    }
+
+    IEnumerator SpeedCoroutine()
+    {
+        SpeedUpPowerUp();
+
+        yield return new WaitForSeconds(powerUpDuration);
+
+        thrustForce = 10f;
+        rotationSpeed = 360f;
+        speedUpDuration = null;
     }
 
     private void SpeedUpPowerUp()
