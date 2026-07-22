@@ -50,6 +50,14 @@ public class AsteroidsPlayerController : MonoBehaviour
     [SerializeField] private GameObject PlayerSpaceship;
     [SerializeField] private Collider2D spaceshipCollider;
 
+    [SerializeField] private Animator animator;
+    [SerializeField] private AudioClip fireSFX;
+    [SerializeField] private AudioClip thrustSFX;
+    [SerializeField] private AudioClip deathSFX;
+    [SerializeField] private AudioClip hyperspaceSFX;
+
+    private AudioSource audioSource;
+
     private Coroutine speedUpDuration;
     private Coroutine bulletSizeUpDuration;
     private bool bulletSizeUpActive = false;
@@ -70,6 +78,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
         spaceshipCollider = GetComponent<Collider2D>();
         spaceshipCollider.enabled = true;
 
@@ -113,6 +122,23 @@ public class AsteroidsPlayerController : MonoBehaviour
         if (Input.GetButton("Vertical") && !isDead)
         {
             rb.AddForce(transform.up * thrustForce * thrustInput, ForceMode2D.Force);
+
+            if (animator != null)
+            {
+                animator.SetBool("thrust", true);
+            }
+
+            if (!audioSource.isPlaying && thrustSFX != null)
+            {
+                audioSource.PlayOneShot(thrustSFX);
+            }
+        }
+        else
+        {
+            if (animator != null)
+            {
+                animator.SetBool("thrust", false);
+            }
         }
     }
 
@@ -141,6 +167,16 @@ public class AsteroidsPlayerController : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             bullet.transform.localScale *= bulletScaleMultiplier;
         }
+
+        if (animator != null)
+        {
+            animator.SetTrigger("fire");
+        }
+        if (fireSFX != null)
+        {
+            audioSource.PlayOneShot(fireSFX);
+        }
+
     }
 
     private void HandleHyperspace()
@@ -266,6 +302,15 @@ public class AsteroidsPlayerController : MonoBehaviour
         if (isTeleportSafe(randomPoint))
         {
             transform.position = randomPoint;
+        }
+
+        if (animator != null)
+        {
+            animator.SetTrigger("hyperspace");
+        }
+        if (hyperspaceSFX != null)
+        {
+            audioSource.PlayOneShot(hyperspaceSFX);
         }
     }
 
