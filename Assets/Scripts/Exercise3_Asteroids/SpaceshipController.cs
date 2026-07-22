@@ -55,6 +55,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     [SerializeField] private AudioClip thrustSFX;
     [SerializeField] private AudioClip deathSFX;
     [SerializeField] private AudioClip hyperspaceSFX;
+    [SerializeField] private float deathExplosionTime = 0.5f;
 
     private AudioSource audioSource;
 
@@ -191,9 +192,10 @@ public class AsteroidsPlayerController : MonoBehaviour
     {
         if (currentLives <= 0)
         {
+            StartCoroutine(AnimateThenTeleport());
+
             isDead = true;
             Debug.Log("Out of Lives! Game Over!");
-            Destroy(gameObject);
         }
     }
 
@@ -220,6 +222,7 @@ public class AsteroidsPlayerController : MonoBehaviour
 
             // Teleport to start and give Iframes
 
+            AnimateThenTeleport();
             transform.position = new Vector2(0,0);
             Destroy(collision.gameObject);
             spaceshipCollider.enabled = false;
@@ -260,6 +263,11 @@ public class AsteroidsPlayerController : MonoBehaviour
         }
     }
 
+    IEnumerator AnimateThenTeleport()
+    {
+        yield return new WaitForSeconds(deathExplosionTime);
+        Destroy(gameObject);
+    }
     IEnumerator SpeedCoroutine()
     {
         SpeedUpPowerUp();
