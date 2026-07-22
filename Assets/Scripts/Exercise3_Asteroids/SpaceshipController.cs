@@ -206,6 +206,20 @@ public class AsteroidsPlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag ("Asteroid"))
         {
             currentLives -= 1;
+
+            // Death Sounds and Anims
+
+            if (animator != null)
+            {
+                animator.SetTrigger("death");
+            }
+            if (deathSFX != null)
+            {
+                audioSource.PlayOneShot(deathSFX);
+            }
+
+            // Teleport to start and give Iframes
+
             transform.position = new Vector2(0,0);
             Destroy(collision.gameObject);
             spaceshipCollider.enabled = false;

@@ -14,6 +14,7 @@
 * 3. When the astroid hits the player, it should destroy the player. 
 */
 
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -26,6 +27,12 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private float minRotationSpeed = -180f;
     [SerializeField] private float maxRotationSpeed = 180f;
 
+    [SerializeField] private AudioClip explosionSFX;
+    [SerializeField] private float explosionTime = 0.5f;
+
+    private Animator animator;
+    private AudioSource audioSource;
+   
     private Rigidbody2D rb;
     private AsteroidSpawner spawner;
     private Vector2 velocity;
@@ -33,7 +40,10 @@ public class Asteroid : MonoBehaviour
    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         spawner = FindAnyObjectByType <AsteroidSpawner>();
+
         rb.linearVelocity = transform.up * speed;
         rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed);
     }
@@ -53,6 +63,20 @@ public class Asteroid : MonoBehaviour
         {
             SpawnChildren(AsteroidSize.Small);
         }
+
+        animator.SetTrigger("destroy");
+
+        if (explosionSFX != null)
+        {
+            audioSource.PlayOneShot(explosionSFX);
+        }
+
+        StartCoroutine(BoomThenDestroy());
+    }
+
+    private IEnumerator BoomThenDestroy()
+    {
+        yield return new WaitForSeconds(explosionTime);
         Destroy(gameObject);
     }
 
