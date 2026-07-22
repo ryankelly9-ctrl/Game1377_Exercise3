@@ -119,17 +119,44 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &17316330 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2070756074497360437, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
+  m_PrefabInstance: {fileID: 1204195773111831169}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &17316333 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3810278828246572216, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
   m_PrefabInstance: {fileID: 1204195773111831169}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 17316330}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab058952446d3ad46a29856a428995e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AsteroidsController
+--- !u!95 &17316337
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17316330}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e4b09e4c20ce9474a894abadb1661a6b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &195472393
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +255,67 @@ MonoBehaviour:
   smallAsteroidPrefab: {fileID: 3242517970010296397, guid: 3b5987f63da87b141a216d4af77cafbb, type: 3}
   initialAsteroidCount: 5
   playerSafeDistance: 3
+--- !u!1001 &327354124
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6436306854842834145, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4223cfd376108214b9a4c0e686de0039, type: 2}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.63098
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.0171
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790365087698017345, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191885229915812583, guid: 49231704176064f44ab3ec917358cd46, type: 3}
+      propertyPath: m_Name
+      value: Asteroid
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 49231704176064f44ab3ec917358cd46, type: 3}
 --- !u!1 &372586611
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,9 +1031,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 484016235194652710, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 484016235194652710, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 484016235194652710, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.4
+      objectReference: {fileID: 0}
     - target: {fileID: 2070756074497360437, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
       propertyPath: m_Name
       value: Spaceship
+      objectReference: {fileID: 0}
+    - target: {fileID: 2186160240982466693, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d159d1d2fce338248a8e4e96f31228f3, type: 3}
+    - target: {fileID: 3810278828246572216, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
+      propertyPath: thrustForceUp
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3810278828246572216, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
       propertyPath: asteroidSpawnerScript
@@ -994,7 +1102,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2070756074497360437, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 17316337}
   m_SourcePrefab: {fileID: 100100000, guid: e645e2f284dfafb48af5c1355760f776, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -1011,3 +1122,4 @@ SceneRoots:
   - {fileID: 1319007446}
   - {fileID: 986948644}
   - {fileID: 1628174694}
+  - {fileID: 327354124}

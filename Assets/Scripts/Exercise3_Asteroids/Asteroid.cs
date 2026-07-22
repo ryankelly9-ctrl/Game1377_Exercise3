@@ -68,6 +68,7 @@ public class Asteroid : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            // anim here
             Destroy(collision.gameObject);
             BreakAsteroid();
         }

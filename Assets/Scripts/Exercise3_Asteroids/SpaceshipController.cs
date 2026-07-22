@@ -179,8 +179,6 @@ public class AsteroidsPlayerController : MonoBehaviour
 
         // Power Ups Collision and Effect
 
-        // NEEDS METHODS FOR EACH COROUTINE ATTACHED TO EACH POWER UP - SIMPLY RUN A METHOD CONTAINING THE POWER UP INTERACTIONS THEN DESTROY THE POWER UP OBJECT.
-
         if (collision.gameObject.CompareTag ("1Up"))
         {
             currentLives += 1;
